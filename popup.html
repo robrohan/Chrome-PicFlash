@@ -12,7 +12,11 @@
 		        $(this).find(".front p").show();
 		    });
 	    }
-	
+	    
+	    function newline(str) {
+	        return str.replace('\n',"<br>");
+	    }
+	    
 		$(document).ready(function(){
 		    chrome.extension.getBackgroundPage().open();
 		    chrome.extension.getBackgroundPage().createSchema();
@@ -25,7 +29,7 @@
                         var id = row['ID'];
                         var url = row['imgUrl'];
                         var front = row['front'];
-                        var back = row['back']
+                        var back = newline(row['back']);
                         
                         var template = '<div id="b'+id+'" class="card">'
                             + '<div class="front side">'
