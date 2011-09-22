@@ -1,0 +1,66 @@
+<html>
+<head>
+	<style>@import "popup.css";</style>
+	<script type="text/javascript" src="jquery-1.6.4.min.js"></script>
+	<script>
+	    function attachCardFlip() {
+	        $(".card").click(function(){
+		        $(this).toggleClass("rotated");
+		    });
+		    
+		    $(".card").mouseover(function(){
+		        $(this).find(".front p").show();
+		    });
+	    }
+	
+		$(document).ready(function(){
+		    chrome.extension.getBackgroundPage().open();
+		    chrome.extension.getBackgroundPage().createSchema();
+		    
+		    chrome.extension.getBackgroundPage().getCards(
+		        function(tx, result) {
+		            for (var i = 0; i < result.rows.length; ++i) {
+                        var row = result.rows.item(i);
+                        
+                        var id = row['ID'];
+                        var url = row['imgUrl'];
+                        var front = row['front'];
+                        var back = row['back']
+                        
+                        var template = '<div id="b'+id+'" class="card">'
+                            + '<div class="front side">'
+                            + '    <img src="'+url+'" alt="'+front+'" title="'+front+'"/>'
+                            + '</div>'
+                            + '<div class="back side">'
+                            + '    <p>'+back+'</p>'
+                            + '</div>'
+                            + '</div>';
+                        
+                        $("#wrapper").append(template);
+                    }
+                    attachCardFlip();
+		        }
+		    );
+		    
+		    attachCardFlip();
+		    
+		    $("#fullView").click(function(){
+		        chrome.windows.create({
+                    url: "fullView.html", 
+                    width: 680, 
+                    height: 520 
+                });
+		    })
+		})
+		
+	</script>
+</head>
+<body>
+    <div id="wrapper" style="width: 300px; height: 282px;">
+    </div>
+    <div style="text-align: center;">
+    <input type="button" value="View All Cards" id="fullView">
+    </div>
+</body>
+</html>
+

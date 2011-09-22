@@ -1,0 +1,91 @@
+<html>
+<head>
+<script>
+    var db = null;
+    
+    function open() {
+        if(db == null) {
+            var dbSize = 5 * 1024 * 1024; // 5MB
+            db = openDatabase('FlashCards', '1.0', 'Flash cards', dbSize);
+        }
+    }
+
+    function onError(tx, e) {
+        console.log('DB Error: ' + e.message );
+    }
+
+    function onSuccess(tx, r) {
+      // re-render all the data
+      // loadTodoItems is defined in Step 4a
+      //html5rocks.webdb.getAllTodoItems(loadTodoItems);
+    }
+    
+    function createSchema() {
+        if(db) {
+            db.transaction(function(tx) {
+                tx.executeSql(
+                    'CREATE TABLE IF NOT EXISTS ' + 
+                    'cards(ID INTEGER PRIMARY KEY ASC, imgUrl TEXT, front TEXT, back TEXT, created_date DATETIME)', 
+                    []
+                );
+            });
+        }
+    }
+    
+    function addCard(card, callback) {
+        db.transaction(function(tx){
+            tx.executeSql(
+                'INSERT INTO cards(imgUrl, front, back, created_date) VALUES (?,?,?,?)', 
+                [card.imgUrl, card.front, card.back, new Date()],
+                (callback) ? callback : onSuccess,
+                onError
+            );
+        });
+    }
+    
+    function getCards(callback) {
+        db.transaction(function(tx) {
+            tx.executeSql(
+                'SELECT * FROM cards ORDER BY created_date desc', 
+                [], 
+                callback, 
+                onError
+            );
+        });
+    }
+    
+    function deleteCard(id, callback) {
+        db.transaction(function(tx) {
+            tx.executeSql(
+                'DELETE FROM cards WHERE ID=?', 
+                [id],
+                (callback) ? callback : onSuccess,
+                onError
+            );
+        });
+    }
+    
+    ///////////////////////////////////////////////////////////
+    
+    function clickHandler() {
+        return function(info, tab) {
+            var url = 'createCard.html#' + info.srcUrl;
+            chrome.windows.create({
+                url: url, 
+                width: 680, 
+                height: 520 
+            });
+        };
+    };
+
+    chrome.contextMenus.create({
+        "title" : "Create Flash Card",
+         "type" : "normal",
+         "contexts" : ["image"],
+         "onclick" : clickHandler()
+    });
+    
+</script>
+</head>
+</html>
+

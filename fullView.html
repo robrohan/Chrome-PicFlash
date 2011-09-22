@@ -1,0 +1,67 @@
+<html>
+<head>
+	<style>@import "popup.css";</style>
+	<script type="text/javascript" src="jquery-1.6.4.min.js"></script>
+	<script>
+	    function attachCardFlip() {
+	        $(".card").click(function(){
+		        $(this).toggleClass("rotated");
+		    });
+		    
+		    $(".card").mouseover(function(){
+		        $(this).find(".front p").show();
+		    });
+		    
+		    $(".card").dblclick(function(){
+		        var id = $(this).attr("id").substring(1);
+		        if(confirm("Are you sure you want to delete this card?")) {
+		            chrome.extension.getBackgroundPage().deleteCard(
+		                id,
+		                function() {
+		                    $("#b"+id).remove();
+	                    }
+                    );
+		        }
+		        return false;
+		    });
+	    }
+	
+		$(document).ready(function(){
+		    chrome.extension.getBackgroundPage().open();
+		    chrome.extension.getBackgroundPage().createSchema();
+		    
+		    chrome.extension.getBackgroundPage().getCards(
+		        function(tx, result) {
+		            for (var i = 0; i < result.rows.length; ++i) {
+                        var row = result.rows.item(i);
+                        
+                        var id = row['ID'];
+                        var url = row['imgUrl'];
+                        var front = row['front'];
+                        var back = row['back']
+                        
+                        var template = '<div id="b'+id+'" class="card">'
+                            + '<div class="front side">'
+                            + '    <img src="'+url+'" alt="'+front+'" title="'+front+'"/>'
+                            + '</div>'
+                            + '<div class="back side">'
+                            + '    <p>'+back+'</p>'
+                            + '</div>'
+                            + '</div>';
+                        
+                        $("#wrapper").append(template);
+                    }
+                    attachCardFlip();
+		        }
+		    );
+		    
+		    attachCardFlip();
+		})
+	</script>
+</head>
+<body>
+    <div id="wrapper" style="width: 100%; height: 100%;">
+    </div>
+</body>
+</html>
+

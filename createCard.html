@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="jquery-1.6.4.min.js"></script>
+        <style>
+        #cardImage {
+            width: 300px;
+            height: 400px;
+        }
+        #cardFront,
+        #cardBack {
+            width: 300px;
+            height: 100px;
+        }
+        </style>
+        <script>
+            $(document).ready(function(){
+                //This should probably be done a better way, but it
+                //wont hurt anything calling the here, and if they are
+                //already done, it wont hurt either
+                chrome.extension.getBackgroundPage().open();
+                chrome.extension.getBackgroundPage().createSchema();
+                
+                // The URL of the image to load is passed on the URL fragment.
+                var imageUrl = window.location.hash.substring(1);
+                if (imageUrl) {
+                    // Use the ImageInfo library to load the image and parse it.
+                    //ImageInfo.loadInfo(imageUrl, getImageInfoHandler(imageUrl));
+                    $("#cardImage").attr("src", imageUrl);
+                }
+                
+                $("#save").click(function(){
+                    var url = $("#cardImage").attr("src");
+                    var front = $("#cardFront").val();
+                    var back = $("#cardBack").val();
+                    chrome.extension.getBackgroundPage().addCard({
+                        "imgUrl":url,
+                        "front":front,
+                        "back":back
+                    },
+                    function(){ window.close(); }
+                    );
+                    
+                });
+            });
+            
+        </script>
+    </head>
+    <body>
+        <div style="float:left; margin-right: 10px;">
+            <div id="cardImageWrapper">
+                <img src="" id="cardImage" width="300" height="400">
+            </div>
+        </div>
+        
+        <div style="float:left">
+            <div id="cardFrontWrapper">
+                <div><label for="cardFront">Card Front (on hover)</label></div>
+                <textarea id="cardFront"></textarea>
+            </div>
+        
+            <div id="cardBackWrapper">
+                <div><label for="cardBack">Card Back</label></div>
+                <textarea id="cardBack"></textarea>
+            </div>
+            
+            <input type="button" value="Cancel" onclick="window.close()">
+            <input type="button" value="Save" id="save">
+        </div>
+    </body>
+</html>

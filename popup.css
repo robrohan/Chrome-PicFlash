@@ -1,0 +1,50 @@
+html, body {
+    margin: 0px;
+	padding: 0px;
+}
+
+.card {
+    float: left;
+    -webkit-transform-style: preserve-3d;
+    -webkit-transition: -webkit-transform 1.5s;
+    width: 150px;
+    height: 200px;
+}
+
+.rotated{
+    -webkit-transform: rotateY(180deg);
+}
+
+.card img {
+    width: 150px;
+    height: 200px;
+}
+
+.side {
+    position: absolute;
+    -webkit-backface-visibility: hidden;
+    -webkit-box-shadow: 0 2px 5px #666;
+}
+
+.back {
+    /* display: none; */
+    -webkit-transform: rotateY(180deg);
+    width: 150px;
+    height: 200px;
+    background: rgb(215,222,231);
+}
+.back p {
+    padding: 5px;
+}
+
+.front {
+    width: 150px;
+    height: 200px;
+}
+
+.front p {
+    position: absolute;
+    top:0;
+    background: white;
+}
+

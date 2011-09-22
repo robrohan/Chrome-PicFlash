@@ -1,0 +1,24 @@
+{
+  "name": "Pic Flash",
+  "version": "1.0",
+  "description": "Pic Flash lets you make flash cards out of any picture on the web",
+  "icons": { 
+      "16": "icon16.png",
+      "48": "icon48.png",
+      "128": "icon128.png" 
+  },
+  "browser_action": {
+      "default_title": "Pic Flash",
+      "default_icon": "icon.png",
+      "popup": "popup.html"
+  },
+  "permissions" : [
+        "contextMenus",
+        "tabs",
+        "http://*/*",
+        "https://*/*"
+  ],
+  "background_page": "background.html",
+  "author": "Rob Rohan",
+  "copyright": "Copyright 2011 Rob Rohan. All Rights Reserved"
+}
