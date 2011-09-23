@@ -43,10 +43,10 @@
         });
     }
     
-    function getCards(callback) {
+    function getCards(callback, limit) {
         db.transaction(function(tx) {
             tx.executeSql(
-                'SELECT * FROM cards ORDER BY created_date desc', 
+                'SELECT * FROM cards ORDER BY created_date desc' + ((limit) ? (' LIMIT '+limit) : ''), 
                 [], 
                 callback, 
                 onError
