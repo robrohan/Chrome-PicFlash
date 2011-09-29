@@ -1,0 +1,47 @@
+body, html {
+    background: white;
+    padding: 0;
+    margin: 0;
+}
+
+.card {
+    float: left;
+    width: 150px;
+    height: 300px;
+    margin: 3px;
+}
+
+.rotated { }
+
+.card img {
+    width: 150px;
+    height: 200px;
+}
+
+.side { 
+
+}
+
+.back {
+    padding: 0;
+    width: 150px;
+    height: 100px;
+    top: 200px;
+    border: 1px solid black;
+    overflow:hidden;
+}
+.back p {
+    margin:0;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 0;
+    padding-bottom: 3px;
+    overflow: hidden;
+}
+
+.front {
+    width: 150px;
+    height: 200px;
+    border: 1px solid black;
+}
+
